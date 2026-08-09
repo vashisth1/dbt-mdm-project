@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: Unified canonical customer staging model across CRM, ERP, Stripe
+    columns:
+      - name: source_system
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CRM', 'ERP', 'STRIPE']
+      - name: source_record_id
+        tests:
+          - not_null
+
+  - name: customer_identity
+    description: Persistent entity identity linking each source record to a golden_id
+    columns:
+      - name: golden_id
+        tests:
+          - not_null
+      - name: source_system
+        tests:
+          - not_null
+      - name: source_record_id
+        tests:
+          - not_null
+
+  - name: customer_crosswalk
+    description: Source-to-golden lineage for reverse/forward lookups
+    columns:
+      - name: golden_id
+        tests:
+          - not_null
+
+  - name: customer_attribute_lineage
+    description: Attribute-level survivorship explaining which source won each golden attribute
+    columns:
+      - name: golden_id
+        tests:
+          - not_null
+      - name: attribute_name
+        tests:
+          - not_null
+
+  - name: customer_golden
+    description: Mastered golden customer record assembled from surviving attributes
+    columns:
+      - name: golden_id
+        tests:
+          - not_null
+          - unique
+
+  - name: customer_suspect_queue
+    description: Match pairs in SUSPECT status requiring manual review
+
+seeds:
+  - name: mdm_source_priority
+    description: Confirmed (Step 0.4) survivorship source priority — 1 is highest priority
+    columns:
+      - name: source_system
+        tests:
+          - not_null
+          - unique
+      - name: priority
+        tests:
+          - not_null

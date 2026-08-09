@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: mdm_raw
+    database: MDM_DEMO
+    schema: MDM_RAW
+    tables:
+      - name: crm_customer_raw
+      - name: erp_customer_raw
+      - name: stripe_customer_raw

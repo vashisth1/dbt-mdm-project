@@ -1,0 +1,12 @@
+mdm_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: ""
+      user: ""
+      role: "ACCOUNTADMIN"
+      database: "MDM_DEMO"
+      warehouse: "COMPUTE_WH"
+      schema: "MDM"
+      threads: 8

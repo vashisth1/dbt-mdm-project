@@ -1,0 +1,4 @@
+rule_name,weight,auto_match_min,suspect_min
+EMAIL_EXACT,100,100,90
+PHONE_EXACT,90,95,80
+NAME_DOB,80,90,75

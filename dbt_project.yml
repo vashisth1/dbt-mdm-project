@@ -1,0 +1,47 @@
+# MDM dbt project configuration for Snowflake
+# Co-authored with CoCo
+
+name: 'mdm_dbt_project'
+version: '1.0.0'
+profile: 'mdm_dbt_project'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+
+vars:
+  mdm_raw_database: MDM_DEMO
+  mdm_raw_schema: MDM_RAW
+  mdm_stg_schema: MDM_STG
+  mdm_int_schema: MDM_INT
+  mdm_schema: MDM
+  mdm_control_schema: MDM_CONTROL
+  mdm_audit_schema: MDM_AUDIT
+
+  default_match_auto_threshold: 90
+  default_match_suspect_threshold: 70
+
+  enable_fuzzy_matching: false
+
+  source_systems:
+    - CRM
+    - ERP
+    - STRIPE
+
+models:
+  mdm_dbt_project:
+    staging:
+      +materialized: view
+      +schema: MDM_STG
+    intermediate:
+      +materialized: view
+      +schema: MDM_INT
+    marts:
+      +materialized: table
+      mdm:
+        +schema: MDM
+    audit:
+      +materialized: table
+      +schema: MDM_AUDIT
